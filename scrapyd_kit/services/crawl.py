@@ -8,6 +8,8 @@ from scrapyd.utils import get_crawl_args
 
 class Crawl(WsResource):
 
+    ws_name = 'kit-crawl'
+
     def crawl(self, args):
         env = os.environ.copy()
         cmd = ['scrapy', 'crawl']
