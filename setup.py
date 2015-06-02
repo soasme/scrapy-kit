@@ -1,11 +1,8 @@
 from os.path import join, dirname
 
-with open(join(dirname(__file__), 'scrapyd_kit/VERSION')) as f:
-    version = f.read().strip()
-
 setup_args = {
     'name': 'scrapyd_kit',
-    'version': version,
+    'version': '0.1.2',
     'url': 'https://github.com/soasme/scrapyd_kit',
     'description': 'A kit for extending Scrapyd',
     'long_description': open('README.rst').read(),

@@ -1,4 +1,5 @@
-import pkgutil
-__version__ = pkgutil.get_data(__package__, 'VERSION').strip()
+# -*- coding: utf-8 -*-
+
+__version__ = '0.1.2'
 
 from . import services
