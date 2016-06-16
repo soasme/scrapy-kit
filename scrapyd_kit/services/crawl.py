@@ -9,9 +9,6 @@ from scrapyd.utils import get_crawl_args
 class Crawl(WsResource):
 
     def jsonize(self, request, data):
-        if not isinstance(data, list):
-            request.setResponseCode(500)
-            return {'code': 1, 'message': 'invalid data type', 'errors': data}
         try:
             data = json.loads(data)
             return {'code': 0, 'message': 'success', 'data': data}
