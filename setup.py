@@ -2,7 +2,7 @@ from os.path import join, dirname
 
 setup_args = {
     'name': 'scrapyd_kit',
-    'version': '0.1.4',
+    'version': '0.1.5',
     'url': 'https://github.com/soasme/scrapyd_kit',
     'description': 'A kit for extending Scrapyd',
     'long_description': open('README.rst').read(),
