@@ -2,11 +2,13 @@
 
 import os
 import json
-from scrapyd.webservice import WsResource
+from twisted.internet import reactor
+from twisted.web import server
+from scrapyd.utils import JsonResource
 from subprocess import Popen, PIPE
 from scrapyd.utils import get_crawl_args
 
-class Crawl(WsResource):
+class Crawl(JsonResource):
 
     def jsonize(self, request, data):
         try:
@@ -27,9 +29,16 @@ class Crawl(WsResource):
         out, _ = process.communicate()
         return out
 
-    def render_POST(self, request):
+    def blockingio(self, request):
         settings = request.args.pop('setting', [])
         settings = dict(x.split('=', 1) for x in settings)
         args = dict((k, v[0]) for k, v in request.args.items())
         out = self.crawl(args)
-        return self.jsonize(request, out)
+        data = self.jsonize(request, out)
+        resp = self.render_object(json.dumps(data), request)
+        request.write(resp)
+        request.finish()
+
+    def render_POST(self, request):
+        reactor.callInThread(self.blockingio, request)
+        return server.NOT_DONE_YET
