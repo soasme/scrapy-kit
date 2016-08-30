@@ -8,15 +8,15 @@ from twisted.web import server
 from subprocess import Popen, PIPE
 from scrapyd.utils import get_crawl_args
 
-class JsonResource(resource.Resource):
+class Crawl(resource.Resource):
 
     json_encoder = json.JSONEncoder()
 
-    def render(self, txrequest):
-        r = resource.Resource.render(self, txrequest)
-        return self.render_object(r, txrequest)
+    def __init__(self, root):
+        JsonResource.__init__(self)
+        self.root = root
 
-    def render_object(self, obj, txrequest):
+    def _render_object(self, obj, txrequest):
         r = self.json_encoder.encode(obj) + "\n"
         txrequest.setHeader('Content-Type', 'application/json')
         txrequest.setHeader('Access-Control-Allow-Origin', '*')
@@ -24,8 +24,6 @@ class JsonResource(resource.Resource):
         txrequest.setHeader('Access-Control-Allow-Headers',' X-Requested-With')
         txrequest.setHeader('Content-Length', len(r))
         return r
-
-class Crawl(JsonResource):
 
     def jsonize(self, request, data):
         try:
@@ -52,7 +50,7 @@ class Crawl(JsonResource):
         args = dict((k, v[0]) for k, v in request.args.items())
         out = self.crawl(args)
         data = self.jsonize(request, out)
-        resp = self.render_object(json.dumps(data), request)
+        resp = self._render_object(data, request)
         request.write(resp)
         request.finish()
 
