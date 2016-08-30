@@ -1,0 +1,7 @@
+include Makefile CHANGES LICENSE AUTHORS
+include scrapyd_kit/services/*
+
+graft tests
+graft docs
+
+global-exclude *.py[co]
