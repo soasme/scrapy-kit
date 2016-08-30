@@ -13,7 +13,7 @@ class Crawl(resource.Resource):
     json_encoder = json.JSONEncoder()
 
     def __init__(self, root):
-        JsonResource.__init__(self)
+        resource.Resource.__init__(self)
         self.root = root
 
     def _render_object(self, obj, txrequest):
